@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const banner = `
 /**!
- * @link https://github.com/goodleby/webpack
+ * @link https://github.com/goodleby/expander
  * @version 0.0.2
  */
 `;

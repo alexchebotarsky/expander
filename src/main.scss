@@ -1,0 +1,13 @@
+.expander-inited {
+  .expander-dropdown {
+    transition: all 300ms ease;
+    transition-property: opacity, visibility;
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+  }
+  &.opened .expander-dropdown {
+    visibility: visible;
+    opacity: 1;
+  }
+}
