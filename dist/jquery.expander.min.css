@@ -4,4 +4,4 @@
  * @version 0.0.2
  */
 
-.expander-inited .expander-dropdown{-webkit-transition:all .3s ease;transition:all .3s ease;-webkit-transition-property:opacity,visibility;transition-property:opacity,visibility;visibility:hidden;opacity:0;display:none}.expander-inited.opened .expander-dropdown{visibility:visible;opacity:1}
+.expander-inited .expander-dropdown{transition:all 300ms ease;transition-property:opacity,visibility;visibility:hidden;opacity:0;display:none}.expander-inited.opened .expander-dropdown{visibility:visible;opacity:1}

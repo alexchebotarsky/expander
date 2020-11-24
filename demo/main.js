@@ -1,3 +1,3 @@
 $('.dropdown').expander({
-  dropdown: true,
+  dropdown: 'bottom',
 });

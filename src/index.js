@@ -43,7 +43,7 @@ import {createPopper} from '@popperjs/core';
           break;
         default:
           if (!passedOptions.class) options.class = $(this).data('expander') || false;
-          if (passedOptions.opened !== true || dataOptions.opened !== true) {
+          if (passedOptions.opened !== true && dataOptions.opened !== true) {
             options.opened = false;
           }
       }
@@ -66,7 +66,11 @@ import {createPopper} from '@popperjs/core';
             if (!this.popper) {
               const {tooltip, btn} = this.dropdown;
               $(tooltip).css('display', 'block');
-              this.popper = createPopper(btn, tooltip);
+              const popperOptions = {
+                placement: this.options.dropdown,
+                ...this.options.popper,
+              };
+              this.popper = createPopper(btn, tooltip, popperOptions);
             }
           } else {
             $(this.options.body).stop().slideDown(this.options.animationDuration);
@@ -104,7 +108,7 @@ import {createPopper} from '@popperjs/core';
       };
       if (expander.options.class) {
         if (!expanders[expander.options.class]) {
-          if (passedOptions.opened !== false || dataOptions.opened !== false) {
+          if (passedOptions.opened !== false && dataOptions.opened !== false) {
             expander.options.opened = true;
           }
           expanders[expander.options.class] = [expander];
@@ -114,19 +118,22 @@ import {createPopper} from '@popperjs/core';
       } else {
         expanders.noClass.push(expander);
       }
-      const {body, toggle, open, close, dropdown} = expander.options;
+      const {body, toggle, open, close, dropdown, dropdownHoverable} = expander.options;
       // Modes
       if (dropdown) {
         $(wrapper).addClass('mode-dropdown');
         $(body).wrap('<div class="expander-dropdown"></div>');
-        expander.dropdown = {
-          tooltip: body.parent().get(0),
-          btn: toggle.get(0),
-        };
+        const tooltip = body.parent().get(0);
+        const btn = toggle.get(0);
+        expander.dropdown = {tooltip, btn};
         // Event listeners
         let allowClickTimeout, allowClick;
-        $(this)
-          .on('click', (event) => !allowClick && event.preventDefault())
+        const hovers = [btn];
+        if (dropdownHoverable) hovers.push(tooltip);
+        $(arraySelector(hovers))
+          .on('click', (event) => {
+            if (!allowClick) event.preventDefault();
+          })
           .on('mouseenter', (event) => {
             allowClickTimeout = setTimeout(() => (allowClick = true), 50);
             expander.open({event});
@@ -175,6 +182,8 @@ import {createPopper} from '@popperjs/core';
     open: [],
     close: [],
     dropdown: false,
+    dropdownHoverable: true,
+    popper: {},
   };
   $(window).one('load', () => {
     $('*[data-expander]').expander();

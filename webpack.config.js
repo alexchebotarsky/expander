@@ -81,11 +81,13 @@ module.exports = (env = {}, argv) => {
             {
               loader: 'postcss-loader',
               options: {
-                ident: 'postcss',
-                plugins: () => {
-                  const plugins = [require('postcss-preset-env')()];
-                  if (argv.mode === 'production') plugins.push(require('cssnano'));
-                  return plugins;
+                postcssOptions: {
+                  ident: 'postcss',
+                  plugins: () => {
+                    const plugins = [require('postcss-preset-env')()];
+                    if (argv.mode === 'production') plugins.push(require('cssnano'));
+                    return plugins;
+                  },
                 },
               },
             },
